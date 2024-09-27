@@ -1,6 +1,6 @@
 <?php
 
-namespace Matondo\TwoFactorAuth\Models;
+namespace Matondo\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

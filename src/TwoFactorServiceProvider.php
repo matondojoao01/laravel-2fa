@@ -1,6 +1,6 @@
 <?php
 
-namespace Matondo\Twofactorauth;
+namespace Matondo;
 
 use Illuminate\Support\ServiceProvider;
 
