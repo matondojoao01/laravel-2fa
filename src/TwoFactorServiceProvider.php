@@ -24,7 +24,7 @@ class TwoFactorServiceProvider extends ServiceProvider
             ], 'twofactorauth-migrations');
 
             $this->publishes([
-                __DIR__ . '/Http/Middleware' => app_path('Http/Middleware'),
+                __DIR__ . '/app/Http/Middleware' => app_path('Http/Middleware'),
             ], 'twofactorauth-middleware');
         }
 

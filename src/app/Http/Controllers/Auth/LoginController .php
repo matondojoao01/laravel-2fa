@@ -1,6 +1,6 @@
 <?php
 
-namespace Matondo\Http\Controllers;
+namespace Matondo\app\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
