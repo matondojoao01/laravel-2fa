@@ -9,12 +9,12 @@ class ComposerStaticInit8eaf3372cb80b3148e8d08c1d69d3bda
     public static $prefixLengthsPsr4 = array (
         'M' => 
         array (
-            'Matondo\\Twofactorauth\\' => 22,
+            'Matondo\\' => 8,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Matondo\\Twofactorauth\\' => 
+        'Matondo\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
