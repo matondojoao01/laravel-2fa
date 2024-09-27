@@ -17,7 +17,7 @@ Após a instalação, registre o TwoFactorAuthServiceProvider no arquivo config/
 ```php
 'providers' => [
     // Outros providers
-    Matondo\TwoFactorAuth\TwoFactorAuthServiceProvider::class,
+   Matondo\TwoFactorServiceProvider::class,
 ],
 ```
 
@@ -26,7 +26,7 @@ Após a instalação, registre o TwoFactorAuthServiceProvider no arquivo config/
 Após registrar o TwoFactorAuthServiceProvider, publique os arquivos do pacote:
 
 ```php
-php artisan vendor:publish --provider="Matondo\TwoFactorAuth\TwoFactorAuthServiceProvider"
+php artisan vendor:publish --provider="Matondo\TwoFactorServiceProvider"
 ```
 
 Esse comando irá publicar as seguintes partes do pacote:
