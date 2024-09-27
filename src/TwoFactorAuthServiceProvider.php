@@ -1,6 +1,6 @@
 <?php
 
-namespace Matondo\TwoFactorAuth;
+namespace Matondo\Twofactorauth;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +31,7 @@ class TwoFactorAuthServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
+    
     public function register()
     {
         
