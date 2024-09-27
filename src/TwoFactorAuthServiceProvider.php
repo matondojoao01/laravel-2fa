@@ -8,6 +8,7 @@ class TwoFactorAuthServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'twofactorauth');
 
         if ($this->app->runningInConsole()) {
