@@ -1,39 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h2>Login</h2>
+@extends('vendor.twofactorauth.auth.layout.app')
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+@section('title', 'Login')
+
+@section('content')
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Bem-vindo de volta!</h2>
+
+    @if (session('error'))
+        <div class="mb-4">
+            <div class="bg-red-500 text-white p-4 rounded">
+                {{ session('error') }}
             </div>
-        @endif
+        </div>
+    @endif
 
-        <form action="{{ route('login') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="email" name="email" id="email" class="form-control" required>
-            </div>
+    <form action="{{ route('login') }}" method="POST" class="login-form">
+        @csrf
+        <input type="email" name="email" placeholder="E-mail" required class="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @error('email')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
 
-            <div class="form-group">
-                <label for="password">Senha:</label>
-                <input type="password" name="password" id="password" class="form-control" required>
-            </div>
+        <input type="password" name="password" placeholder="Senha" required class="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @error('password')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
 
-            <button type="submit" class="btn btn-primary">Entrar</button>
-        </form>
-    </div>
-</body>
-</html>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <p class="message">
+        <a href="#" class="text-blue-500 hover:underline">Esqueceu a senha?</a>
+    </p>
+@endsection
