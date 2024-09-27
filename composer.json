@@ -8,6 +8,13 @@
             "Matondo\\Twofactorauth\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Matondo\\TwoFactorAuth\\TwoFactorServiceProvider"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "Matondo",

@@ -4,7 +4,7 @@ namespace Matondo\Twofactorauth;
 
 use Illuminate\Support\ServiceProvider;
 
-class TwoFactorAuthServiceProvider extends ServiceProvider
+class TwoFactorServiceProvider extends ServiceProvider
 {
     public function boot()
     {
