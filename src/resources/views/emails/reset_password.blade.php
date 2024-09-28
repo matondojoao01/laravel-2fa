@@ -1,14 +1,14 @@
 @component('mail::message')
-# {{ __('auth.reset_password') }}
+# {{ __('auth_2fa.reset_password') }}
 
-{{ __('auth.reset_email_message') }}
+{{ __('auth_2fa.reset_email_message') }}
 
 @component('mail::button', ['url' => url('password/reset', $token)])
-{{ __('auth.reset_button') }}
+{{ __('auth_2fa.reset_button') }}
 @endcomponent
 
-{{ __('auth.no_action_required') }}
+{{ __('auth_2fa.no_action_required') }}
 
-{{ __('auth.regards') }}<br>
+{{ __('auth_2fa.regards') }}<br>
 {{ config('app.name') }}
 @endcomponent
