@@ -60,6 +60,16 @@ class TwoFactorServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../lang' => base_path('lang'),
             ], 'twofactorauth-lang');
+
+            // Publish jobs
+            $this->publishes([
+                __DIR__ . '/App/Jobs' => app_path('Jobs'),
+            ], 'twofactorauth-jobs');
+
+            // Publish mailables
+            $this->publishes([
+                __DIR__ . '/App/Mail' => app_path('Mail'),
+            ], 'twofactorauth-mails');
         }
     }
 
