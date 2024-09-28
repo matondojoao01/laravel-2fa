@@ -1,6 +1,6 @@
 {
-    "name": "matondo/twofactorauth",
-    "description": "Pacote de autenticação 2FA para Laravel",
+    "name": "matondo/auth2fa",
+    "description": "Laravel package that adds two-factor authentication (2FA) for enhanced security",
     "type": "library",
     "license": "MIT",
     "autoload": {
