@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendSmsJob;
+use App\Mail\TwoFactorMail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Twilio\Rest\Client;  
 
 class LoginController extends Controller
 {
-
     public function showLoginForm()
     {
         return view('twofactorauth::auth.login');
     }
-    
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -29,17 +31,20 @@ class LoginController extends Controller
             $user->token_2fa_expiry = now()->addMinutes(10);
             $user->save();
 
-            $tk = md5($_SERVER['HTTP_USER_AGENT'] . $user->id);
+            Mail::to($user->email)->send(new TwoFactorMail($token_2fa));
 
-            Mail::send('twofactorauth::emails.twofactor', ['token' => $token_2fa], function($message) use ($user) {
-                $message->to($user->email)->subject('Seu código de autenticação 2FA');
-            });
+            if(!empty($user->phone))
+            {
+                SendSmsJob::dispatch($user->phone, $token_2fa);
+            }
+
+            $tk = md5($_SERVER['HTTP_USER_AGENT'] . $user->id);
 
             return redirect()->route('2fa.form', [
                 'username' => $user->email,
                 'tk' => $tk,
                 'id' => $user->id,
-                'msg' => 'Por favor, insira o código enviado para seu e-mail.'
+                'msg' => ''
             ]);
         } else {
             return redirect()->back()->with('error', 'Credenciais incorretas.');
@@ -52,4 +57,3 @@ class LoginController extends Controller
         return redirect('/login');
     }
 }
-

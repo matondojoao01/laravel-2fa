@@ -6,59 +6,64 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UsersDevices;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
-class TwoFactorController extends Controller
+class TwoFactorController extends controller
 {
-    public function showTwoFactorForm(Request $request)
+    public function verifyTwoFactor(Request $request)
     {
-        return view('twofactorauth::auth.twofactor', [
-            'username' => $request->username,
-            'tk' => $request->tk,
-            'id' => $request->id,
-            'msg' => $request->msg ?? ''
+
+        $request->validate([
+            '2fa' => 'required',
+        ]);
+        $user = User::where('email', '=', $request->input('username'))->first() ??  Auth::user();
+
+        if ($request->input('2fa') == $user->token_2fa) {
+
+            $user->token_2fa_expiry = \Carbon\Carbon::now()->addDays(365);
+
+            $user->save();
+
+            $dev = UsersDevices::where('user_id', '=', $request->id)->where('token', '=', $request->tk)->count();
+
+            if ($dev >= 1) {
+                $mydev = UsersDevices::where('user_id', '=', $request->id)->where('token', '=', $request->tk)->first();
+                $mydev->aut = 1;
+                $mydev->save();
+
+                $str = preg_replace('/[^A-Za-z0-9. -]/', '',  env('APP_URL'));
+                $str = str_replace('.', '', $str);
+                $cookie_name = 'tk' . $user->id . $str;
+                return redirect(RouteServiceProvider::HOME)->withCookie(cookie()->forever($cookie_name, $request->tk));
+            } else {
+                $mydev = new UsersDevices();
+                $mydev->user_id = $request->id;
+                $mydev->token = $request->tk;
+                $mydev->aut = 1;
+                $mydev->save();
+
+                $str = preg_replace('/[^A-Za-z0-9. -]/', '',  env('APP_URL'));
+                $str = str_replace('.', '', $str);
+                $cookie_name = 'tk' . $user->id . $str;
+                return redirect(RouteServiceProvider::HOME)->withCookie(cookie()->forever($cookie_name, $request->tk));
+            }
+        } 
+        return redirect()->route('2fa.form', [
+            'username' => $user->email,
+            'tk' => $user->token_2fa,
+            'id' => $user->id,
+            'msg' => ''
         ]);
     }
 
-    public function verifyTwoFactor(Request $request)
+    public function showTwoFactorForm(Request $request)
     {
-        $request->validate(['2fa' => 'required']);
-
-        $user = User::where('email', $request->username)->first();
-
-        if (!$user) {
-            return redirect()->route('2fa.form', [
-                'msg' => 'user_not_found',
-                'username' => $request->username
-            ]);
-        }
-
-        if ($request->input('2fa') == $user->token_2fa && Carbon::now()->lt($user->token_2fa_expiry)) {
-            $user->token_2fa_expiry = Carbon::now()->addDays(365); 
-            $user->save();
-
-            $device = UsersDevices::where('user_id', $user->id)
-                                  ->where('token', $request->tk)
-                                  ->first();
-
-            if ($device) {
-                $device->authorized = true;
-                $device->save();
-
-                $cookie_name = 'tk' . $user->id;
-                return redirect(RouteServiceProvider::HOME)->withCookie(cookie()->forever($cookie_name, $request->tk));
-            }
-
-            return redirect(RouteServiceProvider::HOME);
+        if (isset($request['msg'])) {
+            $msg = $request['msg'];
         } else {
-            return redirect()->route('2fa.form', [
-                'msg' => 'invalid_code',
-                'username' => $request->username,
-                'tk' => $request->tk,
-                'id' => $request->id
-            ]);
+            $msg = "";
         }
+        return view('twofactorauth::auth.twofactor', ['username' => $request->username, 'msg' => $msg, 'tk' => $request['tk'], 'id' => $request['id']]);
     }
 }

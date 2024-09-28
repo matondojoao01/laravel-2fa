@@ -1,90 +1,145 @@
-# Pacote de Autenticação 2FA
+# Authentication Package with 2FA
 
-Matondo TwoFactorAuth é um pacote desenvolvido para adicionar autenticação de dois fatores (2FA) a aplicações Laravel. O objetivo inicial do pacote é fornecer uma forma simples de login com autenticação de dois fatores, sem incluir outras etapas de autenticação, como redefinição de senha ou funcionalidades mais avançadas.
+**Matondo TwoFactorAuth** is a package developed to add two-factor authentication (2FA) to Laravel applications. This package offers a comprehensive authentication process, including login, password reset, two-factor authentication, and other essential features. It provides an easy-to-use interface for enabling 2FA, enhancing security without complicating the authentication flow.
 
-# Instalação
+By default, the package comes with Bootstrap-based views for the authentication interface, offering a clean and modern design. However, the package is highly customizable, making it easy to modify the visuals if you need to adjust the design to match your application's theme or branding.
 
-Para instalar o pacote, utilize o Composer:
+# Installation
+
+To install the package, use Composer:
 
 ```php
 composer require matondo/twofactorauth
 ```
 
-#  Registro do Service Provider
+# Service Provider Registration
 
-Após a instalação, registre o TwoFactorAuthServiceProvider no arquivo config/app.php, na seção providers:
+After installation, register the TwoFactorAuthServiceProvider in the config/app.php file under the providers section:
 
 ```php
 'providers' => [
-    // Outros providers
-   Matondo\TwoFactorServiceProvider::class,
+    // Other providers
+    Matondo\TwoFactorServiceProvider::class,
 ],
 ```
 
-# Publicação dos Arquivos
+# Publishing Package Files
 
-Após registrar o TwoFactorAuthServiceProvider, publique os arquivos do pacote:
+Next, publish the package's files with the following command:
 
 ```php
 php artisan vendor:publish --provider="Matondo\TwoFactorServiceProvider"
 ```
 
-Esse comando irá publicar as seguintes partes do pacote:
+**Models:** Models required for two-factor authentication.
+**Controllers:** Controllers to manage authentication logic.
+**Middleware:** Middleware to protect routes requiring 2FA.
+**Views:** Bootstrap-based views necessary for the authentication process.
+**Routes:** A route file containing new routes for two-factor authentication.
 
-- **Models:** As models necessárias para a autenticação de dois fatores.
-- **Controllers:** Controladores para gerenciar a lógica da autenticação.
-- **Middleware:** Middleware para proteger as rotas que requerem autenticação de dois fatores.
-- **Views:** As views necessárias para o processo de autenticação.
-- **Rotas:** Um arquivo de rotas que contém as novas rotas para a autenticação de dois fatores.
+The default authentication views can be easily edited if you want to use a different CSS framework or modify the layout. Simply update the published view files to match your design preferences.
 
-# Inclusão das Rotas
+# Including Routes
 
-Depois de registrar o provider e publicar os arquivos, adicione o seguinte comando no arquivo routes/web.php para incluir as novas rotas:
+Add the following to your routes/web.php file to include the newly published routes:
 
 ```php
 require base_path('routes/twofactorauth.php');
 ```
 
-# Execução das Migrations
+# Running Migrations
 
-Antes de executar as migrations, certifique-se de configurar as variáveis de ambiente no arquivo .env para que a base de dados não apresente erros ao migrar as tabelas. Isso inclui definir as configurações corretas de conexão com o banco de dados.
+Before running the migrations, ensure that your environment variables are set up correctly in the .env file to avoid database errors. This includes configuring the database connection settings.
 
-Além disso, configure as variáveis de ambiente para garantir que os e-mails sejam enviados corretamente. Verifique as configurações do servidor de e-mail, como MAIL_MAILER, MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, e MAIL_ENCRYPTION.
+Also, configure email settings to ensure that emails can be sent during authentication processes, such as during password resets or 2FA code verification. These settings include:
 
-Depois de configurar as variáveis de ambiente, execute as migrations:
-
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+```
+Once configured, run the following command to migrate the necessary tables:
 
 ```php
 php artisan migrate
 ```
 
-# Registro do Middleware
+# Environment Setup for Redis and Queue
 
-Registre o middleware TwoFactorVerify no arquivo app/Http/Kernel.php na seção $routeMiddleware:
+To ensure proper functioning of email and message queuing, configure the following Redis settings in your .env file:
+
+```env
+REDIS_CLIENT=predis
+BROADCAST_DRIVER=log
+CACHE_DRIVER=redis
+FILESYSTEM_DISK=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+SESSION_LIFETIME=120
+```
+
+These settings enable Redis to manage queues, sessions, and cache, improving the performance of the 2FA process.
+
+# Twilio SMS Configuration
+
+To send SMS-based authentication codes, configure Twilio in your .env file with the following example credentials (replace with your own Twilio credentials from the Twilio console):
+
+```env
+TWILIO_SID=your_twilio_sid
+TWILIO_TOKEN=your_twilio_token
+TWILIO_FROM=your_twilio_phone_number
+```
+
+To obtain the Account SID, Auth Token, and Twilio phone number, visit the Twilio Console: Go to https://console.twilio.com/.
+
+# Middleware Registration
+
+Register the TwoFactorVerify middleware in the app/Http/Kernel.php file under the $routeMiddleware array:
+
 
 ```php
 protected $routeMiddleware = [
-    // Outros middlewares
+    // Other middlewares
     '2fa' => \App\Http\Middleware\TwoFactorVerify::class,
 ];
 ```
 
-# Uso do Middleware nas Rotas
+# Using Middleware for Protected Routes
 
-Use o middleware nas rotas que necessitam de autenticação de dois fatores. Por exemplo:
+Apply the 2fa middleware to routes that require two-factor authentication:
 
 ```php
 Route::group(['middleware' => '2fa'], function () {
-    Route::get('/dashboard', function () {
-        // Conteúdo do dashboard
+    Route::get('/home', function () {
+        // Dashboard content
     });
 });
 ```
 
-# Acesso ao Login
+# Accessing the Login
 
-Depois de completar todas as etapas acima, você pode acessar a rota /login para iniciar o processo de autenticação.
+Once all steps are completed, you can access the /login route to initiate the authentication process. After initial login with credentials, the system sends a 2FA code via SMS, which the user must enter to complete the login process, providing an extra layer of security.
 
-O pacote gera um código de autenticação que é enviado ao usuário após a entrada inicial com credenciais. O usuário deve inserir esse código para concluir o processo de login, proporcionando uma segurança adicional.
+# Internationalization Support
 
-Sinta-se à vontade para ajustar quaisquer partes do texto para atender às suas preferências ou necessidades!
+The package supports internationalization (i18n), allowing you to set the locale to either English or Brazilian Portuguese. To change the locale, adjust the app.locale setting in the config/app.php file:
+
+```php
+'locale' => 'pt_BR', // Default: en
+```
+
+# Conclusion
+
+Matondo TwoFactorAuth simplifies the process of adding a full authentication flow to your Laravel application, including features like login, password reset, two-factor authentication, and internationalization. The package also provides a Bootstrap-based UI for authentication that can be easily customized if necessary.
+
+# License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+# Get in Touch
+
+LinkedIn: [matondojoao](https://www.linkedin.com/in/matondojoao) | WhatsApp: https://api.whatsapp.com/send?phone=244947224896&text=Hello%21+I+am+interested+in+collaborating+on+projects...
+. Feel free to reach out for project collaborations, sharing ideas, or any opportunities to connect!

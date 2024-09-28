@@ -11,10 +11,11 @@ class CreateUsersDevicesTable extends Migration
         Schema::create('users_devices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('device');
-            $table->string('ip');
-            $table->string('token');
-            $table->boolean('authorized')->default(false);
+            $table->string('device')->nullable();
+            $table->boolean('aut')->nullable();
+            $table->boolean('deny')->nullable();
+            $table->string('ip')->nullable();
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }
