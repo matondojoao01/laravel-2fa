@@ -2,7 +2,7 @@
 
 **Matondo TwoFactorAuth** is a package developed to add two-factor authentication (2FA) to Laravel applications. This package offers a comprehensive authentication process, including login, password reset, two-factor authentication, and other essential features. It provides an easy-to-use interface for enabling 2FA, enhancing security without complicating the authentication flow.
 
-By default, the package comes with Bootstrap-based views for the authentication interface, offering a clean and modern design. However, the package is highly customizable, making it easy to modify the visuals if you need to adjust the design to match your application's theme or branding.
+The authentication code is sent via email and SMS, with internationalization support for Portuguese and English. The default language of the application is automatically set based on the configuration in config/app.php (locale). By default, the package comes with Bootstrap-based views for the authentication interface, offering a clean and modern design. However, the package is highly customizable, making it easy to modify the visuals if you need to adjust the design to match your application's theme or branding. This package stands out compared to other popular packages like Laravel Breeze and Bootstrap by providing two-factor authentication, adding an extra layer of security to application access.
 
 # Installation
 
