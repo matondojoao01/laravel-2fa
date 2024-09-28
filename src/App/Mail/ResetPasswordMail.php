@@ -33,7 +33,7 @@ class ResetPasswordMail extends Mailable implements ShouldQueue
     public function envelope()
     {
         return new Envelope(
-            subject: __('auth.reset_password_subject'),
+            subject: __('auth_2fa.reset_password_subject'),
         );
     }
 

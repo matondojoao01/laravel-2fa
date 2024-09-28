@@ -5,14 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('auth.register') }}</div>
+                <div class="card-header">{{ __('auth_2fa.register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('auth.name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('auth_2fa.name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('auth.email') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('auth_2fa.email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -41,7 +41,7 @@
 
                         <!-- Adicionando o campo Phone -->
                         <div class="row mb-3">
-                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('auth.phone') }}</label>
+                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('auth_2fa.phone') }}</label>
 
                             <div class="col-md-6">
                                 <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('auth.password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('auth_2fa.password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -79,7 +79,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('auth.register') }}
+                                    {{ __('auth_2fa.register') }}
                                 </button>
                             </div>
                         </div>

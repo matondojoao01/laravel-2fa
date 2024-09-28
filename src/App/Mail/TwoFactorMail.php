@@ -32,7 +32,7 @@ class TwoFactorMail extends Mailable implements ShouldQueue
     public function envelope()
     {
         return new Envelope(
-            subject: __('auth.two_factor_subject'),
+            subject: __('auth_2fa.two_factor_subject'),
         );
     }
 

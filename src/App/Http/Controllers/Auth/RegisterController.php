@@ -28,12 +28,12 @@ class RegisterController extends Controller
             'phone' => 'required|string|min:10|max:15|unique:users',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => str_replace(' ', '', $request->phone),
-            'password' => Hash::make($request->password),
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = str_replace(' ', '', $request->phone);
+        $user->password = Hash::make($request->password);
+        $user->save();
 
         $token_2fa = Str::random(6);
         $user->token_2fa = $token_2fa;
