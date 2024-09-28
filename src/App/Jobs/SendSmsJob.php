@@ -41,7 +41,7 @@ class SendSmsJob implements ShouldQueue
 
         $client = new Client($sid, $token);
 
-        $message = trans('auth.2fa_message', ['token' => $this->token_2fa]);
+        $message = trans('auth_2fa.2fa_message', ['token' => $this->token_2fa]);
 
         $client->messages->create(
             $this->to,
