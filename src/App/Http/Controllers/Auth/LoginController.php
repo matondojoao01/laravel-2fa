@@ -23,23 +23,22 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
             $tk = md5($_SERVER['HTTP_USER_AGENT'] . $user->id);
-
             $dev = UsersDevices::where('user_id', '=', $user->id)->where('token', '=', $tk)->count();
 
             if ($dev >= 1) {
-
-                app('App\Http\Middleware\TwoFactorVerify')->handle(request(), function () {
-                    return redirect(RouteServiceProvider::HOME);
-                });
-                
-            }else {
-
+                return redirect(RouteServiceProvider::HOME);
+            } else {
                 $token_2fa = Str::random(6);
                 $user->token_2fa = $token_2fa;
                 $user->token_2fa_expiry = now()->addMinutes(10);
@@ -51,8 +50,6 @@ class LoginController extends Controller
                     SendSmsJob::dispatch($user->phone, $token_2fa);
                 }
 
-                $tk = md5($_SERVER['HTTP_USER_AGENT'] . $user->id);
-
                 return redirect()->route('2fa.form', [
                     'username' => $user->email,
                     'tk' => $tk,
@@ -61,7 +58,9 @@ class LoginController extends Controller
                 ]);
             }
         } else {
-            return redirect()->back()->with('error', 'Credenciais incorretas.');
+            return redirect()->back()->withErrors([
+                'email' => __('auth_2fa.invalid_credentials'),
+            ])->withInput();
         }
     }
 

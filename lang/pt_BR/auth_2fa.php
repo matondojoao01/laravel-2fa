@@ -38,4 +38,10 @@ return [
     'forgot_your_password' => 'Esqueceu Sua Senha?',
     'register' => 'Registrar',
     'send_password_reset_link' => 'Enviar Link de Redefinição de Senha',
+    'login' => 'Entrar',
+    'register' => 'Registrar-se',
+    'dashboard' => 'Painel de Controle',
+    'logged_in_message' => 'Você está logado!',
+    'logout' => 'Sair',
+    'invalid_credentials' => 'Essas credenciais não correspondem aos nossos registros.',
 ];

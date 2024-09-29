@@ -38,5 +38,10 @@ return [
     'forgot_your_password' => 'Forgot Your Password?',
     'register' => 'Register',
     'send_password_reset_link' => 'Send Password Reset Link',
-
+    'login' => 'Login',
+    'register' => 'Register',
+    'dashboard' => 'Dashboard',
+    'logged_in_message' => 'You are logged in!',
+    'logout' => 'Logout',
+    'invalid_credentials' => 'These credentials do not match our records.',
 ];

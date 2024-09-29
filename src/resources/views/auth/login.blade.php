@@ -8,6 +8,13 @@
                 <div class="card-header">{{ __('auth_2fa.login') }}</div>
 
                 <div class="card-body">
+
+                @if ($errors->has('email'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('email') }}
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
