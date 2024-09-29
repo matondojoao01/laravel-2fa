@@ -33,10 +33,12 @@ class LoginController extends Controller
             $dev = UsersDevices::where('user_id', '=', $user->id)->where('token', '=', $tk)->count();
 
             if ($dev >= 1) {
+
+                app('App\Http\Middleware\TwoFactorVerify')->handle(request(), function () {
+                    return redirect(RouteServiceProvider::HOME);
+                });
                 
-                return redirect(RouteServiceProvider::HOME);
-            
-            } else {
+            }else {
 
                 $token_2fa = Str::random(6);
                 $user->token_2fa = $token_2fa;
