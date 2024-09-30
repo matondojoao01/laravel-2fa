@@ -8,7 +8,7 @@ The authentication code is sent via email and SMS, with internationalization sup
 
 To install the package, use Composer:
 
-```php
+```bash
 composer require matondo/twofactorauth
 ```
 
@@ -27,7 +27,7 @@ After installation, register the TwoFactorAuthServiceProvider in the config/app.
 
 Next, publish the package's files with the following command:
 
-```php
+```bash
 php artisan vendor:publish --provider="Matondo\TwoFactorServiceProvider"
 ```
 
@@ -63,7 +63,7 @@ MAIL_ENCRYPTION=tls
 ```
 Once configured, run the following command to migrate the necessary tables:
 
-```php
+```bash
 php artisan migrate
 ```
 
@@ -119,10 +119,6 @@ Route::group(['middleware' => '2fa'], function () {
 });
 ```
 
-# Accessing the Login
-
-Once all steps are completed, you can access the /login route to initiate the authentication process. After initial login with credentials, the system sends a 2FA code via SMS, which the user must enter to complete the login process, providing an extra layer of security.
-
 # Internationalization Support
 
 The package supports internationalization (i18n), allowing you to set the locale to either English or Brazilian Portuguese. To change the locale, adjust the app.locale setting in the config/app.php file:
@@ -130,6 +126,20 @@ The package supports internationalization (i18n), allowing you to set the locale
 ```php
 'locale' => 'pt_BR', // Default: en
 ```
+
+# Important: Running Queues
+
+To ensure that emails and messages are processed efficiently, you should run the command:
+
+```bash
+php artisan queue:work
+```
+If you're in a testing environment, make sure your server is configured to run queues so that notifications are sent promptly.
+
+
+# Accessing the Login
+
+Once all steps are completed, you can access the /login route to initiate the authentication process. After initial login with credentials, the system sends a 2FA code via SMS, which the user must enter to complete the login process, providing an extra layer of security.
 
 # Conclusion
 
