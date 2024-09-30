@@ -8,7 +8,7 @@ The authentication code is sent via email and SMS, with internationalization sup
 
 To install the package, use Composer:
 
-```bash
+```php
 composer require matondo/twofactorauth
 ```
 
@@ -27,7 +27,7 @@ After installation, register the TwoFactorAuthServiceProvider in the config/app.
 
 Next, publish the package's files with the following command:
 
-```bash
+```php
 php artisan vendor:publish --provider="Matondo\TwoFactorServiceProvider"
 ```
 
@@ -63,7 +63,7 @@ MAIL_ENCRYPTION=tls
 ```
 Once configured, run the following command to migrate the necessary tables:
 
-```bash
+```php
 php artisan migrate
 ```
 
@@ -131,7 +131,7 @@ The package supports internationalization (i18n), allowing you to set the locale
 
 To ensure that emails and messages are processed efficiently, you should run the command:
 
-```bash
+```php
 php artisan queue:work
 ```
 If you're in a testing environment, make sure your server is configured to run queues so that notifications are sent promptly.
